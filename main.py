@@ -7,17 +7,13 @@ import os
 init(autoreset=True)
 
 exchange_rates = {}
-currencies_list = []
 user_wallets = []
 
-def load_api_exchange_rate(currency: str, select_currency: str):
+def load_api_exchange_rate(currency: str):
     try:
-        currency = currency.upper()
-        select_currency = select_currency.upper()
-
         load_dotenv()
         api_key = os.getenv('API_KEY_EXCHANGE_RATE')
-        url = f'https://v6.exchangerate-api.com/v6/{api_key}/latest/{currency}'
+        url = f'https://v6.exchangerate-api.com/v6/{api_key}/latest/EUR'
 
         response = requests.get(url)
         response.raise_for_status()
@@ -25,9 +21,7 @@ def load_api_exchange_rate(currency: str, select_currency: str):
         data = response.json()
 
         for cur, rate in data['conversion_rates'].items():
-            if cur != select_currency:
-                continue
-            else:
+            if cur == currency:
                 exchange_rates.update({cur: rate})
     except requests.exceptions.ConnectionError as e:
         print(e)
@@ -58,3 +52,66 @@ def load_api_bitcoin(vs_currencies: str) -> dict[str, dict[str, int]]:
         print(e)
     except requests.exceptions.HTTPError as e:
         print(e)
+
+def create_the_first_wallet(amount: str):
+    amount = float(amount)
+
+    user_wallets.append({
+        'currency': 'EUR',
+        'amount': amount   
+    })
+
+def create_a_wallet(currency: str, amount: str):
+    currency = currency.upper()
+    amount = float(amount)
+
+    user_wallets.append({
+        'currency': currency,
+        'amount': amount   
+    })
+
+    load_api_exchange_rate(currency=currency)
+
+username = input('Enter your username: ')
+amount = input('Please, deposit your first money: ')
+
+create_the_first_wallet(amount=amount)
+
+while True:
+    if not amount or not username:
+        print('Empty string. Please, try again')
+        break
+    
+    print('')
+    print(rf'{Fore.GREEN}$$\      $$\         $$\      $$\           $$\ $$\            $$\     {Style.RESET_ALL}')
+    print(rf'{Fore.GREEN}$$$\    $$$ |        $$ | $\  $$ |          $$ |$$ |           $$ |    {Style.RESET_ALL}')
+    print(rf'{Fore.GREEN}$$$$\  $$$$ |        $$ |$$$\ $$ | $$$$$$\  $$ |$$ | $$$$$$\ $$$$$$\   {Style.RESET_ALL}')
+    print(rf'{Fore.GREEN}$$\$$\$$ $$ |$$$$$$\ $$ $$ $$\$$ | \____$$\ $$ |$$ |$$  __$$\\_$$  _|  {Style.RESET_ALL}')
+    print(rf'{Fore.GREEN}$$ \$$$  $$ |\______|$$$$  _$$$$ | $$$$$$$ |$$ |$$ |$$$$$$$$ | $$ |    {Style.RESET_ALL}')
+    print(rf'{Fore.GREEN}$$ |\$  /$$ |        $$$  / \$$$ |$$  __$$ |$$ |$$ |$$   ____| $$ |$$\ {Style.RESET_ALL}')
+    print(rf'{Fore.GREEN}$$ | \_/ $$ |        $$  /   \$$ |\$$$$$$$ |$$ |$$ |\$$$$$$$  \$$$$  | {Style.RESET_ALL}')
+    print(rf'{Fore.GREEN}\__|     \__|        \__/     \__| \_______|\__|\__| \_______| \____/  {Style.RESET_ALL}')
+    print(r'')
+    print(r'')
+    print(f'Hi {username}! The main currency in the program: EUR; Exchange rates: {exchange_rates}')
+    print('Please, select the option:')
+    print(f'1. Create a wallet\n2. Create a Bitcoin wallet\n3. Make a transfer to another wallet\n4. View all wallets\n5. Transaction history\n6. Delete all wallets\n7. Exit')
+
+    option = input('Option: ')
+
+    if option == '1':
+        currency = input(f'Please, select a currency: ')
+        amount = input('Please, deposit your first money: ')
+
+        create_a_wallet(currency=currency, amount=amount)
+
+    if option == '4':
+        print('=' * 46)
+
+        for index, wallet in enumerate(user_wallets):
+            print(f'{index + 1}. {wallet}')
+
+        print('=' * 46)
+    
+    if option == '7':
+        break
