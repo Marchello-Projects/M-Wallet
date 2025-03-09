@@ -7,6 +7,7 @@ import os
 init(autoreset=True)
 
 exchange_rates = {}
+currencies_list = []
 user_wallets = []
 
 def load_api_exchange_rate(currency: str, select_currency: str):
@@ -48,6 +49,9 @@ def load_api_bitcoin(ids: str, vs_currencies: str) -> dict[str, dict[str, int]]:
         response.raise_for_status()
 
         data = response.json()
+        currencies_bitcoin = data[ids][vs_currencies]
+
+        exchange_rates.update({'BTC': currencies_bitcoin})
 
         return data[ids][vs_currencies]
     except requests.exceptions.ConnectionError as e:
