@@ -33,3 +33,24 @@ def load_api_exchange_rate(currency: str, select_currency: str):
     except requests.exceptions.HTTPError as e:
         print(e)
 
+def load_api_bitcoin(ids: str, vs_currencies: str) -> dict[str, dict[str, int]]:
+    try: 
+        vs_currencies = vs_currencies.lower()
+
+        url_bitcoin = 'https://api.coingecko.com/api/v3/simple/price'
+
+        params = {
+            "ids": ids,
+            "vs_currencies": vs_currencies          
+        }
+
+        response = requests.get(url_bitcoin, params=params)
+        response.raise_for_status()
+
+        data = response.json()
+
+        return data[ids][vs_currencies]
+    except requests.exceptions.ConnectionError as e:
+        print(e)
+    except requests.exceptions.HTTPError as e:
+        print(e)
