@@ -54,7 +54,7 @@ In this project, i used the following API:
 # How to start?
 1. Clone the repository
     ``` bash
-    git clone https://github.com/Marchello-Projects/Tic-tac-toe_by_Marchello.git
+    git clone https://github.com/Marchello-Projects/M-Wallet.git
     ```
 
 2. Register on the website: https://www.exchangerate-api.com/ and copy the API key from there. Create a .env file in the project folder.
@@ -70,7 +70,7 @@ In this project, i used the following API:
 
     Then assign the API key to the variable
     ```
-    API_KEY_EXCHANGE_RATE=Your API key
+    API_KEY_EXCHANGE_RATE="Your API key"
     ```
 3. Create a virtual environment and install dependencies
     ## Linux/Mac:
