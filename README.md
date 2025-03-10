@@ -88,7 +88,7 @@ In this project, i used the following API:
 
 4. Run the code
     ```
-    python main.py
+    python3 main.py
     ```
 5. Deactivate the virtual environment
     ``` 
