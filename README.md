@@ -75,13 +75,13 @@ In this project, i used the following API:
 3. Create a virtual environment and install dependencies
     ## Linux/Mac:
     ``` bash
-    python3 -m venv myenv
+    python3 -m venv venv
     source myenv/bin/activate
     pip install python-dotenv openpyxl requests colorama
     ```
     ## Windows:
     ``` powershell
-    python3 -m venv myenv
+    python3 -m venv venv
     myenv\Scripts\activate
     pip install python-dotenv openpyxl requests colorama
     ```
